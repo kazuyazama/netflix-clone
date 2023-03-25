@@ -1,11 +1,24 @@
 import React, { useContext } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/auth-context";
 
 const Navbar = () => {
-  const { currentUser ,logOut } = useContext(AuthContext);
+  const { currentUser, logOut } = useContext(AuthContext);
 
-  console.log(currentUser)
+  console.log(currentUser);
+
+  const navigate = useNavigate();
+
+  const handleLogout = async (e) => {
+    e.preventDefault();
+
+    try {
+      await logOut();
+      navigate("/");
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <div className="flex items-center justify-between z-[100] p-4  absolute w-full ">
@@ -14,18 +27,30 @@ const Navbar = () => {
           NETFLIX
         </h1>
       </Link>
-      <div className="flex items-center gap-2">
-        <Link to="/login">
-          <button className="text-white">
-            {currentUser ? "ログアウト" : "ログイン"}{" "}
+      {currentUser?.email ? (
+        <div>
+          <Link to="/account">
+            <button className="text-white pr-4">アカウント</button>
+          </Link>
+          <button
+            onClick={handleLogout}
+            className="bg-red-600 px-6 py-2 rounded cursor-pointer text-white"
+          >
+            ログアウト
           </button>
-        </Link>
-        <Link to="/signup">
-          <button className="bg-red-600 py-2 px-6 rounded  cursor-pointer text-white  ">
-            アカウント作成
-          </button>
-        </Link>
-      </div>
+        </div>
+      ) : (
+        <div>
+          <Link to="/login">
+            <button className="text-white pr-4">ログイン</button>
+          </Link>
+          <Link to="/signup">
+            <button className="bg-red-600 px-6 py-2 rounded cursor-pointer text-white">
+              アカウント作成
+            </button>
+          </Link>
+        </div>
+      )}
     </div>
   );
 };

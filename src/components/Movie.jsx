@@ -1,6 +1,5 @@
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 import { FaHeart, FaRegHeart } from "react-icons/fa";
-import { AuthContext } from "../context/auth-context";
 
 const Movie = ({ movies }) => {
   const [like, setLike] = useState(false);

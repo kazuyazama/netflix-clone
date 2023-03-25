@@ -16,20 +16,20 @@ export const AuthContext = createContext({
 });
 
 export const AuthProvider = ({ children }) => {
-  const [currentUser, setCurrentUser] = useState();
+  const [currentUser, setCurrentUser] = useState({});
 
   const signUp = async (email, password) => {
-    if (email || password) return;
+    if (!email || !password) return;  
     return await createUserWithEmailAndPassword(auth, email, password);
   };
 
   const signIn = async (email, password) => {
-    if (email || password) return;
+    if (!email || !password) return;  
     return await signInWithEmailAndPassword(auth, email, password);
   };
 
   const logOut = () => {
-    return signOut();
+    return signOut(auth);
   };
 
   useEffect(() => {
@@ -38,7 +38,9 @@ export const AuthProvider = ({ children }) => {
       setCurrentUser(user);
     });
 
-    return unsubscribe;
+    return () => {
+      unsubscribe();
+    };
   }, []);
 
   const value = { currentUser, setCurrentUser, logOut, signUp, signIn };

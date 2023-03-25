@@ -1,34 +1,34 @@
 import React, { useContext, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import SignForm from "../components/SignForm";
 import { AuthContext } from "../context/auth-context";
 
 const Signup = () => {
-  const { signUp ,currentUser } = useContext(AuthContext);
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  console.log(currentUser)
+  // const { signUp, currentUser } = useContext(AuthContext);
 
+  // const [email, setEmail] = useState("");
+  // const [password, setPassword] = useState("");
+  // console.log(currentUser);
 
+  // const navigate = useNavigate();
 
-  const navigate = useNavigate();
+  // const handleSubmit = (e) => {
+  //   e.preventDefault();
 
-  const handleSubmit =  (e) => {
-    e.preventDefault();
+  //   try {
+  //     signUp(email, password);
+  //     navigate("/");
 
-    try {
-      signUp(email, password);
-      navigate("/");
-
-      // setEmail("");
-      // setPassword("");
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  //     // setEmail("");
+  //     // setPassword("");
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
 
   return (
     <>
-      <div className="w-full h-screen">
+      {/* <div className="w-full h-screen">
         <img
           className="hidden sm:block absolute w-full h-full object-cover"
           src="https://assets.nflxext.com/ffe/siteui/vlv3/f841d4c7-10e1-40af-bcae-07a3f8dc141a/f6d7434e-d6de-4185-a6d4-c77a2d08737b/US-en-20220502-popsignuptwoweeks-perspective_alpha_website_medium.jpg"
@@ -77,7 +77,8 @@ const Signup = () => {
             </div>
           </div>
         </div>
-      </div>
+      </div> */}
+      <SignForm  />
     </>
   );
 };
