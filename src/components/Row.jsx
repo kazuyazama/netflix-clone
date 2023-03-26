@@ -37,7 +37,7 @@ const Row = ({ title, fetchURL }) => {
         />
         <div
           ref={scrollRef}
-          className="w-full h-full  overflow-scroll whitespace-nowrap scroll-smooth scrollbar-hide relative  "
+          className="w-full h-full overflow-scroll whitespace-nowrap scroll-smooth scrollbar-hide relative  "
         >
           {data.results.map((movies) => (
             <Movie key={movies.id} movies={movies} />

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import requests from "../request";
 import swr from "swr";
 import { fetcher } from "../fetcher";
+import { trunscateString } from "../utils/trunscateString";
 
 const Main = () => {
   const { data, error, isLoading } = swr(requests.requestPopular, fetcher);
@@ -14,14 +15,7 @@ const Main = () => {
   //Math.randomに配列の長さをかけることによりresultsの配列内に絞ってMarh.floorで最も近い整数で切り捨てる
   const movie = results[Math.floor(Math.random() * results.length)];
 
-  //overviewの文字数を制御する関数
-  const trunscateString = (str, num) => {
-    if (str?.length > num) {
-      return str.slice(0, num) + "...";
-    } else {
-      return str;
-    }
-  };
+ 
 
   return (
     <div className="w-full h-[550px] ">

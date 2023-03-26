@@ -28,13 +28,13 @@ const Navbar = () => {
         </h1>
       </Link>
       {currentUser?.email ? (
-        <div>
+        <div className="flex items-center">
           <Link to="/account">
-            <button className="text-white pr-4">アカウント</button>
+            <button className="text-white pr-2 lg:pr-4">アカウント</button>
           </Link>
           <button
             onClick={handleLogout}
-            className="bg-red-600 px-6 py-2 rounded cursor-pointer text-white"
+            className="bg-red-600 px-3 lg:px-6 py-2 rounded cursor-pointer text-white"
           >
             ログアウト
           </button>
@@ -42,10 +42,10 @@ const Navbar = () => {
       ) : (
         <div>
           <Link to="/login">
-            <button className="text-white pr-4">ログイン</button>
+            <button className="text-white pr-2 lg:pr-4">ログイン</button>
           </Link>
           <Link to="/signup">
-            <button className="bg-red-600 px-6 py-2 rounded cursor-pointer text-white">
+            <button className="bg-red-600 px-2 lg:px-6 py-2 rounded cursor-pointer text-white">
               アカウント作成
             </button>
           </Link>
