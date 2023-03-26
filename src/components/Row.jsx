@@ -3,25 +3,28 @@ import swr from "swr";
 import { fetcher } from "../fetcher";
 import Movie from "./Movie";
 import { MdChevronLeft, MdChevronRight } from "react-icons/md";
+import { useSlide } from "../hooks/useSlide";
 
 const Row = ({ title, fetchURL }) => {
   const { data, error, isLoading } = swr(fetchURL, fetcher);
 
-  const scrollRef = useRef(null);
+  // const scrollRef = useRef(null);
+
+  const { scrollRef, slideLeft, slideRight } = useSlide();
 
   if (error) return <div>failed to load</div>;
   if (isLoading) return <div>loading...</div>;
 
   //横スライドする為の関数
-  const slideLeft = (length) => {
-    const slider = scrollRef.current;
-    slider.scrollLeft = slider.scrollLeft - length;
-  };
+  // const slideLeft = (length) => {
+  //   const slider = scrollRef.current;
+  //   slider.scrollLeft = slider.scrollLeft - length;
+  // };
 
-  const slideRight = (length) => {
-    const slider = scrollRef.current;
-    slider.scrollLeft = slider.scrollLeft + length;
-  };
+  // const slideRight = (length) => {
+  //   const slider = scrollRef.current;
+  //   slider.scrollLeft = slider.scrollLeft + length;
+  // };
 
   return (
     <>

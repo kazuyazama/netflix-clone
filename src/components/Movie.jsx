@@ -1,8 +1,33 @@
-import React, { useState } from "react";
+import { arrayUnion, doc, setDoc, updateDoc } from "firebase/firestore";
+import React, { useContext, useState } from "react";
 import { FaHeart, FaRegHeart } from "react-icons/fa";
+import { AuthContext } from "../context/auth-context";
+import { db } from "../firebase";
 
 const Movie = ({ movies }) => {
   const [like, setLike] = useState(false);
+
+  const [saved, setSaved] = useState(false);
+
+  const { currentUser } = useContext(AuthContext);
+
+  const movie = doc(db, "users", `${currentUser?.email}`);
+
+  const savedShow = async () => {
+    if (currentUser?.email) {
+      setLike(!like);
+      setSaved(true);
+      await updateDoc(movie, {
+        savedShows: arrayUnion({
+          id: movies.id,
+          title: movies.title,
+          img: movies.backdrop_path,
+        }),
+      });
+    } else {
+      alert("ログインしてください");
+    }
+  };
 
   return (
     <div
@@ -18,7 +43,7 @@ const Movie = ({ movies }) => {
         <p className=" whitespace-normal text-xs md:text-sm font-bold flex justify-center items-center h-full text-center">
           {movies.title}
         </p>
-        <p className="">
+        <p onClick={savedShow} className="">
           {like ? (
             <FaHeart className=" absolute top-4 left-4 text-gray-300" />
           ) : (

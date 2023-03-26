@@ -4,8 +4,9 @@ import {
   signOut,
   onAuthStateChanged,
 } from "firebase/auth";
+import { doc, setDoc } from "firebase/firestore";
 import { createContext, useEffect, useState } from "react";
-import { auth } from "../firebase";
+import { auth, db } from "../firebase";
 
 export const AuthContext = createContext({
   currentUser: null,
@@ -19,12 +20,15 @@ export const AuthProvider = ({ children }) => {
   const [currentUser, setCurrentUser] = useState({});
 
   const signUp = async (email, password) => {
-    if (!email || !password) return;  
+    if (!email || !password) return;
+    await setDoc(doc(db,"users",email),{
+      savedShows:[]
+    })
     return await createUserWithEmailAndPassword(auth, email, password);
   };
 
   const signIn = async (email, password) => {
-    if (!email || !password) return;  
+    if (!email || !password) return;
     return await signInWithEmailAndPassword(auth, email, password);
   };
 
@@ -33,7 +37,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
+    const unsubscribe = onAuthStateChanged(auth, async (user) => {
       console.log(user);
       setCurrentUser(user);
     });

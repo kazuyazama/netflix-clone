@@ -1,6 +1,5 @@
-
-
 import React, { useContext, useState } from "react";
+import { findAllInRenderedTree } from "react-dom/test-utils";
 import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/auth-context";
 
@@ -11,22 +10,34 @@ const SignForm = ({ login }) => {
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
 
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    try {
-      login ? signIn(email, password) : signUp(email, password);
-      navigate("/");
-      login && setError("");
-      // setEmail("");
-      // setPassword("");
-    } catch (error) {
-      console.log(error);
-    }
+    //ログインがあったらログイン
+    //ログインしたユーザーがfbに存在すればホーム画面に飛ばす
+    login
+      ? signIn(email, password)
+          .then((user) => {
+            user && navigate("/");
+          })
+          .catch((error) => {
+            switch (error.code) {
+              case "auth/user-not-found":
+                alert("ユーザー名が間違っています");
+                break;
+              case "auth/wrong-password":
+                alert("パスワードが間違っています");
+                break;
+              default:
+                console.log(error.code);
+            }
+          })
+      : signUp(email, password).then((user) => {
+          user && navigate("/");
+        });
   };
   return (
     <div className="w-full h-screen">
@@ -39,8 +50,10 @@ const SignForm = ({ login }) => {
       <div className="fixed w-full px-4 py-24 z-50">
         <div className="max-w-[450px] h-[600px] mx-auto bg-black/75 text-white">
           <div className="max-w-[320px] mx-auto py-16">
-            <h1 className="text-3xl font-bold">{login ? "ログイン" : "アカウント作成" }</h1>
-            {login && error ? <p className="p-3 bg-red-400 my-2">{error}</p> : null}
+            <h1 className="text-3xl font-bold">
+              {login ? "ログイン" : "アカウント作成"}
+            </h1>
+
             <form onSubmit={handleSubmit} className="w-full flex flex-col py-4">
               <input
                 onChange={(e) => setEmail(e.target.value)}
@@ -56,7 +69,10 @@ const SignForm = ({ login }) => {
                 placeholder="Password"
                 autoComplete="current-password"
               />
-              <button className="bg-red-600 py-3 my-6 rounded font-bold">
+              <button
+                type="submit"
+                className="bg-red-600 py-3 my-6 rounded font-bold"
+              >
                 {login ? "Sign In" : "Sign Up"}
               </button>
               <div className="flex justify-between items-center text-sm text-gray-600">
